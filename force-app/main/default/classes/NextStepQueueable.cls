@@ -18,18 +18,21 @@
  * Note: The class below contains placeholders for implementing a queueable job to update accounts and opportunities.
  */
 public with sharing class NextStepQueueable {
-
+ 
     // Member variable to store the accounts
     private Map<Id,Account> accounts;
 
     // Constructor to accept the accounts
     public NextStepQueueable(Map<Id,Account> accounts) {
         // Store the accounts in a member variable
+        this.accounts = accounts;
     }
 
     // Method to queue the job
     public static void enqueueJob() {
         // Get 10 accounts with Next Step populated
+     
+
 
         // If there are any accounts, queue the job using System.enqueueJob
     }
@@ -38,21 +41,28 @@ public with sharing class NextStepQueueable {
      * Update/Uncomment the template code to create a method
      * Method to execute the queueable job
      */
-    //[public | private ] [static] data_type execute (input parameters) {
+    public void execute (QueueableContext context) {
         // Get the accounts from the member variable
-
+        for(Account acc : accounts.values()){
             // Remove the Next Step using the helper method
+            removeNextStep(acc);
+        }
 
         // Update the accounts
+        update accounts.values();     
 
         // Get the opportunities related to the accounts
+        List<Opportunity> opps = [SELECT NextStep FROM Opportunity WHERE AccountId IN :accounts.keyset()];
 
+        for(Opportunity opp : opps){
             // Remove the Next Step using the helper method
-
+            removeNextStep(opp);
+        }
         // Update the opportunities
-
+        update opps;
         // Call the enqueueJob method to queue another job to process more records.
-    //}
+
+    }
 
     // Helper method to remove the Next Step
     // Overloaded method to accept an opportunity
