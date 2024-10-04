@@ -73,11 +73,5 @@ private class AccountProcessorTest {
         for(Account acc : updatedAccounts){
            System.assertEquals(3, acc.Number_Of_Contacts__c, 'Wrong number of contacts');
         }
-
-        
-
-
-
-
     }
 }
